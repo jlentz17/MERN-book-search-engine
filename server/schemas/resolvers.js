@@ -41,8 +41,8 @@ const resolvers = {
     saveBook: async (parent, { content }, context) => {
       if (context.user) {
         const user = await User.findByIdAndUpdate(
-          { _id: context.user_id },
-          { $push: { savedBooks: content } },
+          { _id: context.user._id },
+          { $addToSet: { savedBooks: content } },
           { new: true }
         );
 
@@ -54,7 +54,7 @@ const resolvers = {
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         const user = await User.findByIdAndUpdate(
-          { _id: context.user.id },
+          { _id: context.user._id },
           { $pull: { savedBooks: { bookId: bookId } } },
           { new: true }
         );
